@@ -3,7 +3,7 @@
 	<xacro:include filename="$(find qube_description)/urdf/qube.macro.xacro" />
 
 	<link name="world"/>
-	<xacro:qube_model prefix="qube_model"/>
+	<xacro:qube prefix="qube"/>
 
 	<joint name="base_joint" type="fixed">
       <parent link="world"/>
