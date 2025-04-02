@@ -1,0 +1,73 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="qube_model">
+
+  <!-- Define Properties for Flexibility -->
+  <xacro:property name="stator_size" value="0.102 0.102 0.102"/>
+  <xacro:property name="rotor_length" value="0.010"/>
+  <xacro:property name="rotor_radius" value="0.025"/>
+  <xacro:property name="angle_size" value="0.025 0.002 0.002"/>
+
+  <!-- Define the Macro with a single parameter "prefix" -->
+  <xacro:macro name="qube_model" params="prefix">
+
+    <!-- Links with prefixed names -->
+    <link name="${prefix}_stator_link">
+      <visual>
+        <geometry>
+          <box size="${stator_size}"/>
+        </geometry>
+        <material name="black">
+          <color rgba="0 0 0 1"/>
+        </material>
+      </visual>
+    </link>
+
+    <link name="${prefix}_rotor_link">
+      <visual>
+        <geometry>
+          <cylinder length="${rotor_length}" radius="${rotor_radius}"/>
+        </geometry>
+        <material name="red">
+          <color rgba="1 0 0 1"/>
+        </material>
+      </visual>
+    </link>
+
+    <link name="${prefix}_angle_link">
+      <visual>
+        <geometry>
+          <box size="${angle_size}"/>
+        </geometry>
+        <material name="white">
+          <color rgba="1 1 1 1"/>
+        </material>
+      </visual>
+    </link>
+
+    <!-- Joints with prefixed names -->
+    <joint name="${prefix}_stator_joint" type="fixed">
+      <parent link="base_link"/>
+      <child link="${prefix}_stator_link"/>
+      <origin xyz="0 0 0.050" rpy="0 0 0"/>
+    </joint>
+
+    <joint name="${prefix}_angle" type="revolute">
+      <parent link="${prefix}_stator_link"/>
+      <child link="${prefix}_rotor_link"/>
+      <origin xyz="0 0 0.05" rpy="0 0 0"/>
+      <limit lower="-3.14" upper="3.14" effort="10" velocity="1.0"/>
+      <axis xyz="0 0 1"/>
+    </joint>
+
+    <joint name="${prefix}_indicator" type="fixed">
+      <parent link="${prefix}_rotor_link"/>
+      <child link="${prefix}_angle_link"/>
+      <origin xyz="0.012 0 0.005" rpy="0 0 0"/>
+    </joint>
+
+  </xacro:macro>
+
+  <!-- Define Static Links -->
+  <link name="base_link"/>
+
+</robot>

@@ -1,0 +1,14 @@
+package.xml
+setup.cfg
+setup.py
+qube_description/__init__.py
+qube_description.egg-info/PKG-INFO
+qube_description.egg-info/SOURCES.txt
+qube_description.egg-info/dependency_links.txt
+qube_description.egg-info/requires.txt
+qube_description.egg-info/top_level.txt
+qube_description.egg-info/zip-safe
+resource/qube_description
+test/test_copyright.py
+test/test_flake8.py
+test/test_pep257.py
