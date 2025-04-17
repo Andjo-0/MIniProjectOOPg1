@@ -11,7 +11,7 @@
   <xacro:macro name="qube" params="prefix">
 
     <!-- Links with prefixed names -->
-    <link name="${prefix}_stator_link">
+    <link name="${prefix}stator_link">
       <visual>
         <geometry>
           <box size="${stator_size}"/>
@@ -22,7 +22,7 @@
       </visual>
     </link>
 
-    <link name="${prefix}_rotor_link">
+    <link name="${prefix}rotor_link">
       <visual>
         <geometry>
           <cylinder length="${rotor_length}" radius="${rotor_radius}"/>
@@ -33,7 +33,7 @@
       </visual>
     </link>
 
-    <link name="${prefix}_angle_link">
+    <link name="${prefix}angle_link">
       <visual>
         <geometry>
           <box size="${angle_size}"/>
@@ -45,32 +45,31 @@
     </link>
 
     <!-- Joints with prefixed names -->
-    <joint name="${prefix}_stator_joint" type="fixed">
+    <joint name="${prefix}stator_joint" type="fixed">
       <parent link="base_link"/>
-      <child link="${prefix}_stator_link"/>
+      <child link="${prefix}stator_link"/>
       <origin xyz="0 0 0.050" rpy="0 0 0"/>
     </joint>
 
-<joint name="${prefix}_motor_joint" type="revolute">
-  <parent link="${prefix}_stator_link"/>
-  <child link="${prefix}_rotor_link"/>
+<joint name="${prefix}motor_joint" type="continuous">
+  <parent link="${prefix}stator_link"/>
+  <child link="${prefix}rotor_link"/>
   <origin xyz="0 0 0.05" rpy="0 0 0"/>
-  <limit lower="-3.14" upper="3.14" effort="10" velocity="1.0"/>
   <axis xyz="0 0 1"/>
-  <!-- Add ros2_control element below -->
-  <ros2_control name="${prefix}_motor_joint" type="transmission_interface/SimpleTransmission">
-    <joint name="${prefix}_motor_joint">
-      <command_interface name="velocity"/>
-      <state_interface name="velocity"/>
-    </joint>
-    <actuator name="${prefix}_motor"/>
-  </ros2_control>
 </joint>
 
+    <!-- ros2_control transmission configuration -->
+    <ros2_control name="motor_joint" type="transmission_interface/SimpleTransmission">
+      <joint name="${prefix}motor_joint">
+        <command_interface name="velocity"/>
+        <state_interface name="velocity"/>
+        <state_interface name="position"/>
+      </joint>
+    </ros2_control>
 
-    <joint name="${prefix}_indicator" type="fixed">
-      <parent link="${prefix}_rotor_link"/>
-      <child link="${prefix}_angle_link"/>
+    <joint name="${prefix}indicator" type="fixed">
+      <parent link="${prefix}rotor_link"/>
+      <child link="${prefix}angle_link"/>
       <origin xyz="0.012 0 0.005" rpy="0 0 0"/>
     </joint>
 
